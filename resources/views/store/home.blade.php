@@ -8,18 +8,53 @@
     .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; opacity: 0; transition: opacity .7s ease; pointer-events: none; }
     .hero-slide.active { opacity: 1; pointer-events: auto; }
 
-    /* Slide 1 — Dark gradient + orange glow */
-    .hero-slide-1 { background: linear-gradient(120deg, #0a1628 0%, #131921 55%, #1a2030 100%); }
-    .hero-slide-1::before { content:''; position:absolute; right:-80px; top:-80px; width:520px; height:520px; background: radial-gradient(circle, rgba(255,153,0,.18) 0%, transparent 70%); pointer-events:none; }
-    .hero-slide-1::after { content:''; position:absolute; left:30%; bottom:-60px; width:360px; height:360px; background: radial-gradient(circle, rgba(0,145,200,.1) 0%, transparent 70%); pointer-events:none; }
+    /* Slide backgrounds with real images */
+    .hero-slide-1 {
+        background: url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1400&q=80&auto=format&fit=crop') center/cover no-repeat;
+    }
+    .hero-slide-1::before {
+        content:''; position:absolute; inset:0;
+        background: linear-gradient(100deg, rgba(10,22,40,.92) 0%, rgba(19,25,33,.80) 50%, rgba(10,22,40,.55) 100%);
+        pointer-events:none;
+    }
 
-    /* Slide 2 — Deep blue */
-    .hero-slide-2 { background: linear-gradient(135deg, #0d1b4b 0%, #1a2d6b 50%, #0a1628 100%); }
-    .hero-slide-2::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at 80% 40%, rgba(100,180,255,.12) 0%, transparent 65%); pointer-events:none; }
+    .hero-slide-2 {
+        background: url('https://images.unsplash.com/photo-1498049794561-7780e7231661?w=1400&q=80&auto=format&fit=crop') center/cover no-repeat;
+    }
+    .hero-slide-2::before {
+        content:''; position:absolute; inset:0;
+        background: linear-gradient(100deg, rgba(13,27,75,.93) 0%, rgba(26,45,107,.82) 50%, rgba(10,22,40,.55) 100%);
+        pointer-events:none;
+    }
 
-    /* Slide 3 — Dark green teal */
-    .hero-slide-3 { background: linear-gradient(135deg, #0a2018 0%, #0d2d20 50%, #0a1628 100%); }
-    .hero-slide-3::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at 75% 45%, rgba(0,200,120,.12) 0%, transparent 65%); pointer-events:none; }
+    .hero-slide-3 {
+        background: url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1400&q=80&auto=format&fit=crop') center/cover no-repeat;
+    }
+    .hero-slide-3::before {
+        content:''; position:absolute; inset:0;
+        background: linear-gradient(100deg, rgba(10,32,24,.93) 0%, rgba(13,45,32,.82) 50%, rgba(10,22,40,.55) 100%);
+        pointer-events:none;
+    }
+
+    /* Slide 4 — Home & Living (warm amber) */
+    .hero-slide-4 {
+        background: url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&q=80&auto=format&fit=crop') center/cover no-repeat;
+    }
+    .hero-slide-4::before {
+        content:''; position:absolute; inset:0;
+        background: linear-gradient(100deg, rgba(40,20,5,.93) 0%, rgba(70,35,5,.82) 50%, rgba(20,12,0,.55) 100%);
+        pointer-events:none;
+    }
+
+    /* Slide 5 — Sports & Fitness (dark red) */
+    .hero-slide-5 {
+        background: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1400&q=80&auto=format&fit=crop') center/cover no-repeat;
+    }
+    .hero-slide-5::before {
+        content:''; position:absolute; inset:0;
+        background: linear-gradient(100deg, rgba(40,5,5,.93) 0%, rgba(80,10,10,.82) 50%, rgba(20,5,5,.55) 100%);
+        pointer-events:none;
+    }
 
     .hero-content { position: relative; z-index: 2; max-width: 1240px; margin: 0 auto; padding: 0 48px; display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 32px; }
     .hero-text { flex: 1; max-width: 560px; }
@@ -43,17 +78,32 @@
     .hero-stat-label { font-size: 11px; color: #667; margin-top: 3px; text-transform: uppercase; letter-spacing: .5px; }
 
     /* Hero visual panel */
-    .hero-visual { flex-shrink: 0; width: 300px; position: relative; display: flex; flex-direction: column; gap: 12px; }
-    .hero-card { background: rgba(255,255,255,.07); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; }
-    .hero-card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .hero-visual { flex-shrink: 0; width: 320px; position: relative; display: flex; flex-direction: column; gap: 10px; }
+    .hero-main-img { position: relative; border-radius: 16px; overflow: hidden; height: 210px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .hero-main-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-main-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.55) 0%, transparent 55%); }
+    .hero-main-img-label { position: absolute; bottom: 12px; left: 14px; right: 14px; display: flex; align-items: flex-end; justify-content: space-between; }
+    .hero-main-img-label span { font-size: 13px; font-weight: 700; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+    .hero-main-img-price { background: #FF9900; color: #131921; font-size: 13px; font-weight: 800; border-radius: 8px; padding: 4px 10px; }
+    .hero-discount-badge { position: absolute; top: 12px; left: 12px; background: #CC0C39; color: #fff; font-size: 11px; font-weight: 800; border-radius: 6px; padding: 3px 9px; letter-spacing: .3px; }
+    .hero-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .hero-thumb { border-radius: 10px; overflow: hidden; height: 80px; position: relative; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,.35); transition: transform .15s; }
+    .hero-thumb:hover { transform: scale(1.04); }
+    .hero-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.5) 0%, transparent 60%); }
+    .hero-thumb-label { position: absolute; bottom: 6px; left: 6px; right: 6px; font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.6); line-height: 1.2; }
+
+    /* Hero feature cards (small) */
+    .hero-card { background: rgba(255,255,255,.07); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; }
+    .hero-card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .hero-card-icon.orange { background: rgba(255,153,0,.2); }
     .hero-card-icon.blue { background: rgba(77,184,255,.2); }
     .hero-card-icon.green { background: rgba(0,224,150,.2); }
-    .hero-card-text strong { display: block; font-size: 14px; font-weight: 700; color: #fff; }
-    .hero-card-text span { font-size: 12px; color: #99a8bb; }
-    .hero-card-badge { margin-left: auto; background: #FF9900; color: #131921; font-size: 11px; font-weight: 800; border-radius: 12px; padding: 3px 10px; white-space: nowrap; flex-shrink: 0; }
-    .hero-card-badge.blue-badge { background: #4db8ff; }
-    .hero-card-badge.green-badge { background: #00e096; }
+    .hero-card-text strong { display: block; font-size: 13px; font-weight: 700; color: #fff; }
+    .hero-card-text span { font-size: 11px; color: #99a8bb; }
+    .hero-card-badge { margin-left: auto; background: #FF9900; color: #131921; font-size: 10px; font-weight: 800; border-radius: 10px; padding: 3px 9px; white-space: nowrap; flex-shrink: 0; }
+    .hero-card-badge.blue-badge { background: #4db8ff; color: #0a1628; }
+    .hero-card-badge.green-badge { background: #00e096; color: #0a2018; }
 
     /* Floating dot decorations */
     .hero-dots { position: absolute; top: 24px; right: 24px; display: grid; grid-template-columns: repeat(5,8px); gap: 6px; opacity: .18; }
@@ -179,35 +229,36 @@
                 </div>
             </div>
             <div class="hero-visual">
-                <div class="hero-card">
-                    <div class="hero-card-icon orange">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <div class="hero-main-img">
+                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=700&q=85&auto=format&fit=crop" alt="Shopping" />
+                    <div class="hero-main-img-overlay"></div>
+                    <div class="hero-discount-badge">UP TO 60% OFF</div>
+                    <div class="hero-main-img-label">
+                        <span>Top Deals Today</span>
+                        <span class="hero-main-img-price">From $9.99</span>
                     </div>
-                    <div class="hero-card-text">
-                        <strong>Free Shipping</strong>
-                        <span>On orders over $50</span>
-                    </div>
-                    <span class="hero-card-badge">FREE</span>
                 </div>
-                <div class="hero-card">
-                    <div class="hero-card-icon blue">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4db8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    </div>
-                    <div class="hero-card-text">
-                        <strong>Secure Checkout</strong>
-                        <span>256-bit SSL encryption</span>
-                    </div>
-                    <span class="hero-card-badge blue-badge">SAFE</span>
-                </div>
-                <div class="hero-card">
-                    <div class="hero-card-icon green">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-                    </div>
-                    <div class="hero-card-text">
-                        <strong>Easy Returns</strong>
-                        <span>30-day hassle-free returns</span>
-                    </div>
-                    <span class="hero-card-badge green-badge">30 DAY</span>
+                <div class="hero-thumbs">
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&q=80&auto=format&fit=crop" alt="Camera" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Electronics</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=80&auto=format&fit=crop" alt="Shoes" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Footwear</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&q=80&auto=format&fit=crop" alt="Watch" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Accessories</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1586495777744-4e6232bf2177?w=300&q=80&auto=format&fit=crop" alt="Beauty" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Beauty</div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -247,35 +298,36 @@
                 </div>
             </div>
             <div class="hero-visual">
-                <div class="hero-card">
-                    <div class="hero-card-icon blue">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4db8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                <div class="hero-main-img">
+                    <img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=700&q=85&auto=format&fit=crop" alt="Laptop" />
+                    <div class="hero-main-img-overlay"></div>
+                    <div class="hero-discount-badge">NEW ARRIVALS</div>
+                    <div class="hero-main-img-label">
+                        <span>Latest Laptops</span>
+                        <span class="hero-main-img-price" style="background:#4db8ff;color:#0a1628;">From $499</span>
                     </div>
-                    <div class="hero-card-text">
-                        <strong>Smartphones</strong>
-                        <span>Latest models in stock</span>
-                    </div>
-                    <span class="hero-card-badge blue-badge">NEW</span>
                 </div>
-                <div class="hero-card">
-                    <div class="hero-card-icon blue">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4db8ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    </div>
-                    <div class="hero-card-text">
-                        <strong>Laptops &amp; PCs</strong>
-                        <span>Top brands, best prices</span>
-                    </div>
-                    <span class="hero-card-badge blue-badge">HOT</span>
-                </div>
-                <div class="hero-card">
-                    <div class="hero-card-icon orange">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                    </div>
-                    <div class="hero-card-text">
-                        <strong>Flash Sale Today</strong>
-                        <span>Ends in 24 hours</span>
-                    </div>
-                    <span class="hero-card-badge">SALE</span>
+                <div class="hero-thumbs">
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&q=80&auto=format&fit=crop" alt="Phone" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Smartphones</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&q=80&auto=format&fit=crop" alt="Headphones" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Headphones</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=300&q=80&auto=format&fit=crop" alt="Gadgets" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Gadgets</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=300&q=80&auto=format&fit=crop" alt="Smartwatch" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Smartwatches</div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -319,35 +371,178 @@
                 </div>
             </div>
             <div class="hero-visual">
-                <div class="hero-card">
-                    <div class="hero-card-icon green">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+                <div class="hero-main-img">
+                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=700&q=85&auto=format&fit=crop" alt="Fashion" />
+                    <div class="hero-main-img-overlay"></div>
+                    <div class="hero-discount-badge">NEW SEASON</div>
+                    <div class="hero-main-img-label">
+                        <span>Women's Collection</span>
+                        <span class="hero-main-img-price" style="background:#00e096;color:#0a2018;">From $29.99</span>
                     </div>
-                    <div class="hero-card-text">
-                        <strong>Men's Fashion</strong>
-                        <span>Shirts, jeans, jackets</span>
-                    </div>
-                    <span class="hero-card-badge green-badge">TREND</span>
                 </div>
-                <div class="hero-card">
-                    <div class="hero-card-icon green">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
-                    </div>
-                    <div class="hero-card-text">
-                        <strong>Women's Collection</strong>
-                        <span>Dresses, tops &amp; more</span>
-                    </div>
-                    <span class="hero-card-badge green-badge">NEW</span>
+                <div class="hero-thumbs">
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=300&q=80&auto=format&fit=crop" alt="Men Fashion" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Men's Style</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=300&q=80&auto=format&fit=crop" alt="Sneakers" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Footwear</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=300&q=80&auto=format&fit=crop" alt="Bags" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Handbags</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=300&q=80&auto=format&fit=crop" alt="Dresses" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Dresses</div>
+                    </a>
                 </div>
-                <div class="hero-card">
-                    <div class="hero-card-icon orange">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+        </div>
+    </div>
+
+    {{-- Slide 4: Home & Living --}}
+    <div class="hero-slide hero-slide-4">
+        <div class="hero-dots">
+            @for($d=0;$d<25;$d++)<span></span>@endfor
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge" style="background:rgba(255,180,0,.15);border-color:rgba(255,180,0,.4);color:#ffb400;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffb400" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Home &amp; Living
+                </div>
+                <h1 class="hero-title">Transform Your<br><span style="color:#ffb400;">Home</span> with<br>Premium Décor</h1>
+                <p class="hero-subtitle">Furniture, lighting, kitchen essentials and home décor — everything you need to make your space beautiful.</p>
+                <div class="hero-btns">
+                    <a href="{{ route('products.index') }}" class="btn-primary" style="background:#ffb400;color:#1a0f00;box-shadow:0 4px 20px rgba(255,180,0,.35);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        Shop Home
+                    </a>
+                    <a href="{{ route('products.index') }}" class="btn-outline">View Collections &rsaquo;</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" style="color:#ffb400;">8K<span style="color:#ffb400;">+</span></div>
+                        <div class="hero-stat-label">Home Products</div>
                     </div>
-                    <div class="hero-card-text">
-                        <strong>Accessories</strong>
-                        <span>Bags, belts &amp; watches</span>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" style="color:#ffb400;">Up to <span style="color:#ffb400;">40%</span></div>
+                        <div class="hero-stat-label">Off This Week</div>
                     </div>
-                    <span class="hero-card-badge">HOT</span>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" style="color:#ffb400;">Free<span style="color:#ffb400;"> Assembly</span></div>
+                        <div class="hero-stat-label">On Furniture</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-main-img">
+                    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=85&auto=format&fit=crop" alt="Sofa" />
+                    <div class="hero-main-img-overlay"></div>
+                    <div class="hero-discount-badge" style="background:#ffb400;color:#1a0f00;">40% OFF</div>
+                    <div class="hero-main-img-label">
+                        <span>Premium Furniture</span>
+                        <span class="hero-main-img-price" style="background:#ffb400;color:#1a0f00;">From $199</span>
+                    </div>
+                </div>
+                <div class="hero-thumbs">
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=300&q=80&auto=format&fit=crop" alt="Bedroom" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Bedroom</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&q=80&auto=format&fit=crop" alt="Kitchen" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Kitchen</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80&auto=format&fit=crop" alt="Lighting" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Lighting</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80&auto=format&fit=crop" alt="Garden" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Garden</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Slide 5: Sports & Fitness --}}
+    <div class="hero-slide hero-slide-5">
+        <div class="hero-dots">
+            @for($d=0;$d<25;$d++)<span></span>@endfor
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge" style="background:rgba(255,60,60,.15);border-color:rgba(255,60,60,.4);color:#ff4444;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ff4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                    Sports &amp; Fitness
+                </div>
+                <h1 class="hero-title">Gear Up &amp;<br><span style="color:#ff4444;">Train Hard</span><br>with Top Gear</h1>
+                <p class="hero-subtitle">Professional sports equipment, gym wear, and fitness accessories — everything to power your active lifestyle.</p>
+                <div class="hero-btns">
+                    <a href="{{ route('products.index') }}" class="btn-primary" style="background:#ff4444;color:#fff;box-shadow:0 4px 20px rgba(255,60,60,.35);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                        Shop Sports
+                    </a>
+                    <a href="{{ route('products.index') }}" class="btn-outline">View All Gear &rsaquo;</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" style="color:#ff4444;">12K<span style="color:#ff4444;">+</span></div>
+                        <div class="hero-stat-label">Sports Items</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" style="color:#ff4444;">Pro<span style="color:#ff4444;"> Brands</span></div>
+                        <div class="hero-stat-label">Nike · Adidas · more</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" style="color:#ff4444;">Same<span style="color:#ff4444;"> Day</span></div>
+                        <div class="hero-stat-label">Dispatch Available</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-main-img">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=700&q=85&auto=format&fit=crop" alt="Gym" />
+                    <div class="hero-main-img-overlay"></div>
+                    <div class="hero-discount-badge" style="background:#ff4444;">BEST SELLERS</div>
+                    <div class="hero-main-img-label">
+                        <span>Fitness Equipment</span>
+                        <span class="hero-main-img-price" style="background:#ff4444;">From $24.99</span>
+                    </div>
+                </div>
+                <div class="hero-thumbs">
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1539794830467-1f1755804d13?w=300&q=80&auto=format&fit=crop" alt="Running" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Running</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&q=80&auto=format&fit=crop" alt="Gym Wear" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Gym Wear</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?w=300&q=80&auto=format&fit=crop" alt="Yoga" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Yoga</div>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="hero-thumb">
+                        <img src="https://images.unsplash.com/photo-1490646268468-4b5248f9f47c?w=300&q=80&auto=format&fit=crop" alt="Cycling" />
+                        <div class="hero-thumb-overlay"></div>
+                        <div class="hero-thumb-label">Cycling</div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -366,6 +561,8 @@
         <button class="hero-dot active" onclick="heroGoTo(0)"></button>
         <button class="hero-dot" onclick="heroGoTo(1)"></button>
         <button class="hero-dot" onclick="heroGoTo(2)"></button>
+        <button class="hero-dot" onclick="heroGoTo(3)"></button>
+        <button class="hero-dot" onclick="heroGoTo(4)"></button>
     </div>
 </div>
 

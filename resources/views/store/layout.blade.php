@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'MyShop') — Professional Store</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #EAEDED; color: #0F1111; margin: 0; }
@@ -101,9 +100,9 @@
         /* Deals strip */
         .deals-strip { background: #fff; border-bottom: 1px solid #e7e7e7; display: flex; align-items: center; padding: 0 18px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; gap: 0; }
         .deals-strip::-webkit-scrollbar { display: none; }
-        .deals-strip a { color: #0F1111; font-size: 13px; padding: 9px 13px; border-bottom: 3px solid transparent; display: inline-flex; align-items: center; gap: 5px; font-weight: 400; white-space: nowrap; transition: border-color .15s, color .15s; }
-        .deals-strip a:hover { border-bottom-color: #FF9900; color: #C7511F; }
-        .deals-strip a.active { border-bottom-color: #FF9900; font-weight: 700; color: #C7511F; }
+        .deals-strip a { color: #0F1111; font-size: 13px; padding: 9px 13px; border-bottom: 3px solid transparent; display: inline-flex; align-items: center; gap: 5px; font-weight: 400; white-space: nowrap; transition: all .15s; background: transparent; }
+        .deals-strip a:hover { border-bottom-color: #FF9900; color: #C7511F; background: #fff8ee; }
+        .deals-strip a.active { border-bottom-color: #FF9900; font-weight: 700; color: #131921; background: #FFD814; }
 
         /* Breadcrumb */
         .breadcrumb { padding: 8px 24px; font-size: 13px; background: #fff; display: flex; align-items: center; flex-wrap: wrap; gap: 2px; border-bottom: 1px solid #e7e7e7; }
@@ -275,9 +274,9 @@
                 <b>Returns &amp; Orders</b>
             </div>
         </a>
-        <a href="#" class="nav-cart">
+        <a href="{{ route('cart.index') }}" class="nav-cart">
             <svg width="24" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-            <span class="nav-cart-count" id="cartCount">0</span>
+            <span class="nav-cart-count" id="cartCount">{{ session('cart') ? array_sum(array_column(session('cart'), 'quantity')) : '0' }}</span>
             <span style="font-size:14px;font-weight:700;">Cart</span>
         </a>
     </div>
@@ -289,10 +288,10 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         All
     </a>
-    <a href="{{ route('products.index') }}">Today's Deals</a>
-    <a href="{{ route('products.index') }}">Electronics</a>
-    <a href="{{ route('products.index') }}">New Arrivals</a>
-    <a href="{{ route('products.index') }}">Best Sellers</a>
+    <a href="{{ route('products.index', ['sort'=>'latest']) }}">Today's Deals</a>
+    <a href="{{ route('electronics') }}" class="{{ request()->routeIs('electronics') ? 'active' : '' }}">Electronics</a>
+    <a href="{{ route('products.index', ['sort'=>'latest']) }}">New Arrivals</a>
+    <a href="{{ route('products.index', ['sort'=>'price_asc']) }}">Best Sellers</a>
     <a href="{{ route('products.index') }}">Customer Service</a>
     <a href="{{ route('products.index') }}" class="prime">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -302,59 +301,66 @@
 
 {{-- Deals strip --}}
 <div class="deals-strip">
-    <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') && !request()->anyFilled(['category','brand','q']) ? 'active' : '' }}">
+    @php
+        $stripCats = \App\Models\Category::where('is_active', true)->orderBy('name')->get()->keyBy(function($c){ return strtolower($c->name); });
+        $catByName = function(string $name) use ($stripCats) {
+            $key = strtolower($name);
+            return isset($stripCats[$key]) ? route('products.index', ['category' => $stripCats[$key]->id]) : route('products.index', ['q' => $name]);
+        };
+    @endphp
+    <a href="{{ route('products.index', ['sort'=>'latest']) }}" class="{{ request()->routeIs('products.index') && !request()->anyFilled(['category','brand','q']) ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         Today's Deals
     </a>
-    <a href="{{ route('products.index', ['sort'=>'latest']) }}">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <a href="{{ route('coupons') }}" class="{{ request()->routeIs('coupons') ? 'active' : '' }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
         Coupons
     </a>
-    <a href="{{ route('products.index') }}">
+    <a href="{{ route('renewed-deals') }}" class="{{ request()->routeIs('renewed-deals') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
         Renewed Deals
     </a>
-    <a href="{{ route('products.index') }}">
+    <a href="{{ route('outlet') }}" class="{{ request()->routeIs('outlet') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         Outlet
     </a>
-    <a href="{{ route('products.index') }}">
+    <a href="{{ route('myshop-resale') }}" class="{{ request()->routeIs('myshop-resale') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         MyShop Resale
     </a>
-    <a href="{{ route('products.index') }}">
+    <a href="{{ route('local-deals') }}" class="{{ request()->routeIs('local-deals') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         Local Deals
     </a>
-    <a href="{{ route('products.index') }}">
+    <a href="{{ route('electronics') }}" class="{{ request()->routeIs('electronics') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         Electronics
     </a>
-    <a href="{{ route('products.index') }}">
+    <a href="{{ route('home-garden') }}" class="{{ request()->routeIs('home-garden') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Home &amp; Garden
     </a>
-    <a href="{{ route('products.index') }}">
+    <a href="{{ route('fashion') }}" class="{{ request()->routeIs('fashion') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
         Fashion
     </a>
-    <a href="{{ route('products.index') }}">
+    <a href="{{ route('sports') }}" class="{{ request()->routeIs('sports') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
         Sports
     </a>
-    <a href="{{ route('products.index') }}">
+    <a href="{{ route('beauty') }}" class="{{ request()->routeIs('beauty') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
         Beauty
     </a>
-    <a href="{{ route('products.index') }}">
+    <a href="{{ route('new-releases') }}" class="{{ request()->routeIs('new-releases') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
         New Releases
     </a>
-    <a href="{{ route('products.index', ['sort'=>'price_asc']) }}">
+    <a href="{{ route('best-price') }}" class="{{ request()->routeIs('best-price') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         Best Price
     </a>
-    <a href="{{ route('products.index', ['sort'=>'name']) }}">
+    <a href="{{ route('a-z-listings') }}" class="{{ request()->routeIs('a-z-listings') ? 'active' : '' }}">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
         A–Z Listings
     </a>
