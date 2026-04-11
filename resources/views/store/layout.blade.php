@@ -53,6 +53,17 @@
         .nav-cart:hover { border-color: #fff; }
         .nav-cart-count { background: #FF9900; color: #131921; font-size: 13px; font-weight: 700; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
 
+        /* Language selector */
+        .nav-lang { display: flex; align-items: center; gap: 4px; color: #fff; padding: 5px 9px; border: 1px solid transparent; border-radius: 2px; cursor: pointer; font-size: 13px; font-weight: 500; white-space: nowrap; position: relative; flex-shrink: 0; }
+        .nav-lang:hover { border-color: #fff; }
+        .nav-lang-flag { width: 22px; height: 15px; border-radius: 2px; object-fit: cover; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .nav-lang-dropdown { position: absolute; top: calc(100% + 6px); right: 0; background: #fff; border: 1px solid #d5d9d9; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,.18); z-index: 9999; min-width: 180px; padding: 6px 0; display: none; }
+        .nav-lang-dropdown.open { display: block; }
+        .nav-lang-option { display: flex; align-items: center; gap: 10px; padding: 9px 14px; font-size: 13px; color: #0F1111; cursor: pointer; }
+        .nav-lang-option:hover { background: #f7f8f8; }
+        .nav-lang-option.selected { font-weight: 700; color: #C7511F; }
+        .nav-lang-option .lang-code { font-size: 11px; color: #888; margin-left: auto; }
+
         /* Category strip */
         .cat-strip { background: #232F3E; color: #fff; display: flex; align-items: center; padding: 0 18px; gap: 0; overflow-x: auto; font-size: 13px; white-space: nowrap; scrollbar-width: none; }
         .cat-strip::-webkit-scrollbar { display: none; }
@@ -60,6 +71,13 @@
         .cat-strip a:hover { border-color: #fff; }
         .cat-strip a.active { border-color: #fff; }
         .cat-strip a.prime { color: #00A8E0; font-weight: 700; }
+
+        /* Deals strip */
+        .deals-strip { background: #fff; border-bottom: 1px solid #e7e7e7; display: flex; align-items: center; padding: 0 18px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; gap: 0; }
+        .deals-strip::-webkit-scrollbar { display: none; }
+        .deals-strip a { color: #0F1111; font-size: 13px; padding: 9px 13px; border-bottom: 3px solid transparent; display: inline-flex; align-items: center; gap: 5px; font-weight: 400; white-space: nowrap; transition: border-color .15s, color .15s; }
+        .deals-strip a:hover { border-bottom-color: #FF9900; color: #C7511F; }
+        .deals-strip a.active { border-bottom-color: #FF9900; font-weight: 700; color: #C7511F; }
 
         /* Breadcrumb */
         .breadcrumb { padding: 8px 24px; font-size: 13px; background: #fff; display: flex; align-items: center; flex-wrap: wrap; gap: 2px; border-bottom: 1px solid #e7e7e7; }
@@ -135,6 +153,47 @@
 
     {{-- Right nav --}}
     <div class="nav-right">
+        {{-- Language selector --}}
+        <div class="nav-lang" id="langBtn" onclick="toggleLangDropdown()">
+            <svg width="22" height="15" viewBox="0 0 22 15" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:2px;flex-shrink:0;">
+                <rect width="22" height="15" fill="#B22234"/>
+                <rect y="1.15" width="22" height="1.15" fill="white"/>
+                <rect y="3.46" width="22" height="1.15" fill="white"/>
+                <rect y="5.77" width="22" height="1.15" fill="white"/>
+                <rect y="8.08" width="22" height="1.15" fill="white"/>
+                <rect y="10.38" width="22" height="1.15" fill="white"/>
+                <rect y="12.69" width="22" height="1.15" fill="white"/>
+                <rect width="9" height="8" fill="#3C3B6E"/>
+            </svg>
+            <span id="langLabel" style="font-size:13px;font-weight:700;">EN</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            <div class="nav-lang-dropdown" id="langDropdown">
+                <div class="nav-lang-option selected" onclick="selectLang('EN','English')" data-lang="EN">
+                    <svg width="22" height="15" viewBox="0 0 22 15" fill="none" style="border-radius:2px;flex-shrink:0;"><rect width="22" height="15" fill="#B22234"/><rect y="1.15" width="22" height="1.15" fill="white"/><rect y="3.46" width="22" height="1.15" fill="white"/><rect y="5.77" width="22" height="1.15" fill="white"/><rect y="8.08" width="22" height="1.15" fill="white"/><rect y="10.38" width="22" height="1.15" fill="white"/><rect y="12.69" width="22" height="1.15" fill="white"/><rect width="9" height="8" fill="#3C3B6E"/></svg>
+                    English <span class="lang-code">EN</span>
+                </div>
+                <div class="nav-lang-option" onclick="selectLang('ES','Español')" data-lang="ES">
+                    <svg width="22" height="15" viewBox="0 0 22 15" fill="none" style="border-radius:2px;flex-shrink:0;"><rect width="22" height="15" fill="#c60b1e"/><rect y="3.75" width="22" height="7.5" fill="#ffc400"/></svg>
+                    Español <span class="lang-code">ES</span>
+                </div>
+                <div class="nav-lang-option" onclick="selectLang('FR','Français')" data-lang="FR">
+                    <svg width="22" height="15" viewBox="0 0 22 15" fill="none" style="border-radius:2px;flex-shrink:0;"><rect width="7.33" height="15" fill="#002395"/><rect x="7.33" width="7.33" height="15" fill="white"/><rect x="14.67" width="7.33" height="15" fill="#ED2939"/></svg>
+                    Français <span class="lang-code">FR</span>
+                </div>
+                <div class="nav-lang-option" onclick="selectLang('DE','Deutsch')" data-lang="DE">
+                    <svg width="22" height="15" viewBox="0 0 22 15" fill="none" style="border-radius:2px;flex-shrink:0;"><rect width="22" height="5" fill="#000"/><rect y="5" width="22" height="5" fill="#D00"/><rect y="10" width="22" height="5" fill="#FFCE00"/></svg>
+                    Deutsch <span class="lang-code">DE</span>
+                </div>
+                <div class="nav-lang-option" onclick="selectLang('AR','العربية')" data-lang="AR">
+                    <svg width="22" height="15" viewBox="0 0 22 15" fill="none" style="border-radius:2px;flex-shrink:0;"><rect width="22" height="5" fill="#006233"/><rect y="5" width="22" height="5" fill="white"/><rect y="10" width="22" height="5" fill="#006233"/></svg>
+                    العربية <span class="lang-code">AR</span>
+                </div>
+                <div class="nav-lang-option" onclick="selectLang('ZH','中文')" data-lang="ZH">
+                    <svg width="22" height="15" viewBox="0 0 22 15" fill="none" style="border-radius:2px;flex-shrink:0;"><rect width="22" height="15" fill="#DE2910"/><polygon points="4,2 5,5 8,5 5.5,7 6.5,10 4,8 1.5,10 2.5,7 0,5 3,5" fill="#FFDE00"/></svg>
+                    中文 <span class="lang-code">ZH</span>
+                </div>
+            </div>
+        </div>
         @auth
             <a href="#" class="nav-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -174,7 +233,7 @@
 </div>
 
 {{-- Category strip --}}
-<div class="cat-strip">
+<div class="cat-strip" id="catStripMain">
     <a href="{{ route('home') }}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         All
@@ -187,6 +246,66 @@
     <a href="{{ route('products.index') }}" class="prime">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         Prime
+    </a>
+</div>
+
+{{-- Deals strip --}}
+<div class="deals-strip">
+    <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') && !request()->anyFilled(['category','brand','q']) ? 'active' : '' }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Today's Deals
+    </a>
+    <a href="{{ route('products.index', ['sort'=>'latest']) }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Coupons
+    </a>
+    <a href="{{ route('products.index') }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        Renewed Deals
+    </a>
+    <a href="{{ route('products.index') }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Outlet
+    </a>
+    <a href="{{ route('products.index') }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        MyShop Resale
+    </a>
+    <a href="{{ route('products.index') }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Local Deals
+    </a>
+    <a href="{{ route('products.index') }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Electronics
+    </a>
+    <a href="{{ route('products.index') }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home &amp; Garden
+    </a>
+    <a href="{{ route('products.index') }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+        Fashion
+    </a>
+    <a href="{{ route('products.index') }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        Sports
+    </a>
+    <a href="{{ route('products.index') }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
+        Beauty
+    </a>
+    <a href="{{ route('products.index') }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
+        New Releases
+    </a>
+    <a href="{{ route('products.index', ['sort'=>'price_asc']) }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Best Price
+    </a>
+    <a href="{{ route('products.index', ['sort'=>'name']) }}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        A–Z Listings
     </a>
 </div>
 
@@ -316,5 +435,35 @@
 </script>
 
 @yield('scripts')
+<script>
+// ===== LANGUAGE SELECTOR =====
+function toggleLangDropdown() {
+    const dd = document.getElementById('langDropdown');
+    dd.classList.toggle('open');
+}
+function selectLang(code, label) {
+    document.getElementById('langLabel').textContent = code;
+    document.querySelectorAll('.nav-lang-option').forEach(el => {
+        el.classList.toggle('selected', el.dataset.lang === code);
+    });
+    document.getElementById('langDropdown').classList.remove('open');
+    localStorage.setItem('myshop_lang', code);
+    event.stopPropagation();
+}
+document.addEventListener('click', function(e) {
+    const btn = document.getElementById('langBtn');
+    if (btn && !btn.contains(e.target)) {
+        const dd = document.getElementById('langDropdown');
+        if (dd) dd.classList.remove('open');
+    }
+});
+(function(){
+    const saved = localStorage.getItem('myshop_lang');
+    if (saved && saved !== 'EN') {
+        const names = {ES:'Español',FR:'Français',DE:'Deutsch',AR:'العربية',ZH:'中文'};
+        if (names[saved]) selectLang(saved, names[saved]);
+    }
+})();
+</script>
 </body>
 </html>
