@@ -126,7 +126,10 @@
             @if($hasImages)
                 <img id="mainImg" src="{{ $images->first() }}" alt="{{ $product->name }}" />
             @else
-                <div style="font-size:80px;color:#ccc;text-align:center;">📦</div>
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#ccc;">
+                    <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#d5d9d9" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+                    <span style="font-size:13px;color:#aaa;">No image available</span>
+                </div>
             @endif
         </div>
     </div>
@@ -138,8 +141,14 @@
             <div class="brand-link">Brand: <a href="{{ route('products.index', ['brand' => $product->brand_id]) }}">{{ $product->brand->name }}</a></div>
         @endif
         <div class="rating-row">
-            <span class="stars">★★★★☆</span>
-            <a href="#" class="rating-link">3.3</a>
+            <span class="stars" style="display:inline-flex;gap:2px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF9900" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF9900" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF9900" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF9900" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            <a href="#" class="rating-link">4.0</a>
             <a href="#" class="rating-link">(14 ratings)</a>
             @if($product->sku)
                 <span style="color:#888;font-size:12px;margin-left:8px;">| SKU: {{ $product->sku }}</span>
@@ -149,8 +158,14 @@
         <div class="price-block">
             <span class="currency">$</span><span class="whole">{{ $whole }}</span><span class="fraction">{{ $fraction }}</span>
         </div>
-        <div class="delivery-line"><span class="green">FREE delivery</span> Mon, May 4 – Wed, Jun 6</div>
-        <div class="delivery-line" style="color:#555;margin-top:4px;">📍 Deliver to your location</div>
+        <div class="delivery-line" style="display:flex;align-items:center;gap:6px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#007600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            <span class="green">FREE delivery</span> Mon, May 4 – Wed, Jun 6
+        </div>
+        <div class="delivery-line" style="color:#555;margin-top:6px;display:flex;align-items:center;gap:6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#007185" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span style="color:#007185;">Deliver to your location</span>
+        </div>
         <hr class="divider">
         @if($product->short_description)
             <div class="short-desc">{!! $product->short_description !!}</div>
@@ -176,9 +191,15 @@
         <div class="buy-price">
             <span class="currency">$</span><span class="whole">{{ $whole }}</span><span class="fraction">{{ $fraction }}</span>
         </div>
-        <div class="buy-green">FREE delivery</div>
+        <div class="buy-green" style="display:flex;align-items:center;gap:5px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#007600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            FREE delivery
+        </div>
         <div class="buy-sub">Mon, May 4 – Wed, Jun 6</div>
-        <div style="font-size:12px;color:#007185;margin-bottom:10px;">📍 Deliver to your location</div>
+        <div style="font-size:12px;color:#007185;margin-bottom:10px;display:flex;align-items:center;gap:4px;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#007185" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Deliver to your location
+        </div>
         @if($product->stock > 10)
             <div class="buy-stock">In Stock</div>
         @elseif($product->stock > 0)
@@ -225,12 +246,20 @@
                     @if($rthumb)
                         <img src="{{ $rthumb }}" alt="{{ $rel->name }}" />
                     @else
-                        <div style="font-size:40px;color:#ccc;">📦</div>
+                        <div style="display:flex;align-items:center;justify-content:center;">
+                                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#d5d9d9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+                                </div>
                     @endif
                 </div>
                 <div class="rel-body">
                     <div class="rel-name">{{ $rel->name }}</div>
-                    <div style="color:#FF9900;font-size:12px;">★★★★☆</div>
+                    <div style="display:flex;gap:2px;margin:3px 0;">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="#FF9900" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="#FF9900" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="#FF9900" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="#FF9900" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                </div>
                     <div class="rel-price">${{ number_format($rel->price, 2) }}</div>
                 </div>
             </a>
