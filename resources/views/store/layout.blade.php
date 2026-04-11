@@ -17,12 +17,38 @@
         .nav-logo:hover { color: #fff; }
         .nav-logo span { color: #fff; }
 
-        .nav-deliver { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #ccc; white-space: nowrap; flex-shrink: 0; cursor: pointer; padding: 5px 7px; border: 1px solid transparent; border-radius: 2px; }
+        .nav-deliver { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #ccc; white-space: nowrap; flex-shrink: 0; cursor: pointer; padding: 5px 7px; border: 1px solid transparent; border-radius: 2px; transition: border-color .15s; }
         .nav-deliver:hover { border-color: #fff; }
         .nav-deliver svg { flex-shrink: 0; }
         .nav-deliver-text { display: flex; flex-direction: column; }
         .nav-deliver-text span { font-size: 11px; color: #ccc; }
         .nav-deliver-text b { font-size: 13px; color: #fff; }
+
+        /* Location modal */
+        .loc-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 99998; display: none; }
+        .loc-overlay.open { display: block; }
+        .loc-modal { position: fixed; top: 60px; left: 18px; background: #fff; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,.28); z-index: 99999; width: 320px; padding: 0; display: none; overflow: hidden; }
+        .loc-modal.open { display: block; }
+        .loc-modal-header { background: #131921; color: #fff; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; }
+        .loc-modal-header h3 { font-size: 15px; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px; }
+        .loc-close-btn { background: none; border: none; color: #ccc; cursor: pointer; padding: 2px; display: flex; align-items: center; justify-content: center; border-radius: 3px; }
+        .loc-close-btn:hover { color: #fff; background: rgba(255,255,255,.1); }
+        .loc-modal-body { padding: 16px; }
+        .loc-modal-body p { font-size: 13px; color: #555; margin: 0 0 12px; line-height: 1.5; }
+        .loc-input-wrap { display: flex; gap: 8px; margin-bottom: 12px; }
+        .loc-input-wrap input { flex: 1; padding: 9px 12px; border: 1px solid #d5d9d9; border-radius: 6px; font-size: 14px; outline: none; color: #0F1111; }
+        .loc-input-wrap input:focus { border-color: #FF9900; box-shadow: 0 0 0 2px rgba(255,153,0,.2); }
+        .loc-submit-btn { background: #FF9900; border: none; border-radius: 6px; padding: 9px 14px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background .12s; color: #131921; }
+        .loc-submit-btn:hover { background: #e88b00; }
+        .loc-divider { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
+        .loc-divider::before, .loc-divider::after { content:''; flex:1; height:1px; background:#e7e7e7; }
+        .loc-divider span { font-size: 12px; color: #888; }
+        .loc-detect-btn { width: 100%; background: #fff; border: 1px solid #d5d9d9; border-radius: 6px; padding: 9px; font-size: 13px; cursor: pointer; color: #007185; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 7px; transition: background .12s, border-color .12s; }
+        .loc-detect-btn:hover { background: #f7f8f8; border-color: #007185; }
+        .loc-current { display: flex; align-items: center; gap: 8px; background: #f7f8f8; border: 1px solid #e7e7e7; border-radius: 6px; padding: 9px 12px; margin-top: 12px; font-size: 13px; color: #0F1111; }
+        .loc-current svg { flex-shrink: 0; color: #FF9900; }
+        .loc-current-text { flex: 1; }
+        .loc-current-text small { display: block; font-size: 11px; color: #888; }
 
         /* Search */
         .nav-search { flex: 1; display: flex; max-width: 700px; position: relative; border-radius: 4px; overflow: visible; }
@@ -85,8 +111,6 @@
         .breadcrumb a:hover { color: #C7511F; text-decoration: underline; }
         .breadcrumb span.sep { color: #aaa; margin: 0 4px; }
 
-        /* Promo bar */
-        .promo-bar { background: linear-gradient(90deg, #c0392b 0%, #CC0C39 50%, #c0392b 100%); color: #fff; text-align: center; padding: 7px 16px; font-size: 13px; font-weight: 700; letter-spacing: .5px; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
         /* Footer */
         footer { background: #232F3E; color: #ccc; margin-top: 0; }
@@ -115,24 +139,51 @@
 </head>
 <body>
 
-{{-- Promo bar --}}
-<div class="promo-bar">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-    FREE SHIPPING on orders over $50 &nbsp;|&nbsp; Shop now and save!
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-</div>
-
 {{-- Top Nav --}}
 <div class="nav-top">
     {{-- Logo --}}
     <a href="{{ route('home') }}" class="nav-logo">My<span>Shop</span></a>
 
     {{-- Deliver to --}}
-    <div class="nav-deliver">
+    <div class="nav-deliver" id="deliverBtn" onclick="openLocModal()">
         <svg width="16" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         <div class="nav-deliver-text">
             <span>Deliver to</span>
-            <b>Your Location</b>
+            <b id="deliverLabel">Your Location</b>
+        </div>
+    </div>
+
+    {{-- Location Modal --}}
+    <div class="loc-overlay" id="locOverlay" onclick="closeLocModal()"></div>
+    <div class="loc-modal" id="locModal">
+        <div class="loc-modal-header">
+            <h3>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Choose your location
+            </h3>
+            <button class="loc-close-btn" onclick="closeLocModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="loc-modal-body">
+            <p>Enter a delivery ZIP or postal code to see product availability and delivery options.</p>
+            <div class="loc-input-wrap">
+                <input type="text" id="locInput" placeholder="Enter ZIP / Postal code" maxlength="12" />
+                <button class="loc-submit-btn" onclick="saveLocation()">Apply</button>
+            </div>
+            <div class="loc-divider"><span>or</span></div>
+            <button class="loc-detect-btn" onclick="detectLocation()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/><circle cx="12" cy="12" r="10" stroke-dasharray="3 3" opacity=".4"/></svg>
+                Use my current location
+            </button>
+            <div class="loc-current" id="locCurrent" style="display:none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div class="loc-current-text">
+                    <span id="locCurrentLabel">Your Location</span>
+                    <small>Saved delivery location</small>
+                </div>
+                <button onclick="clearLocation()" style="background:none;border:none;cursor:pointer;font-size:11px;color:#CC0C39;font-weight:600;">Clear</button>
+            </div>
         </div>
     </div>
 
@@ -436,6 +487,71 @@
 
 @yield('scripts')
 <script>
+// ===== LOCATION MODAL =====
+function openLocModal() {
+    document.getElementById('locModal').classList.add('open');
+    document.getElementById('locOverlay').classList.add('open');
+    setTimeout(() => document.getElementById('locInput').focus(), 80);
+    const saved = localStorage.getItem('myshop_location');
+    if (saved) {
+        document.getElementById('locInput').value = saved;
+        document.getElementById('locCurrentLabel').textContent = saved;
+        document.getElementById('locCurrent').style.display = 'flex';
+    }
+}
+function closeLocModal() {
+    document.getElementById('locModal').classList.remove('open');
+    document.getElementById('locOverlay').classList.remove('open');
+}
+function saveLocation() {
+    const val = document.getElementById('locInput').value.trim();
+    if (!val) return;
+    localStorage.setItem('myshop_location', val);
+    document.getElementById('deliverLabel').textContent = val;
+    document.getElementById('locCurrentLabel').textContent = val;
+    document.getElementById('locCurrent').style.display = 'flex';
+    closeLocModal();
+}
+function clearLocation() {
+    localStorage.removeItem('myshop_location');
+    document.getElementById('deliverLabel').textContent = 'Your Location';
+    document.getElementById('locInput').value = '';
+    document.getElementById('locCurrent').style.display = 'none';
+}
+function detectLocation() {
+    const btn = document.querySelector('.loc-detect-btn');
+    btn.textContent = 'Detecting...';
+    btn.disabled = true;
+    if (!navigator.geolocation) {
+        btn.textContent = 'Geolocation not supported';
+        btn.disabled = false;
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(
+        pos => {
+            const label = pos.coords.latitude.toFixed(2) + '°, ' + pos.coords.longitude.toFixed(2) + '°';
+            document.getElementById('locInput').value = label;
+            btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg> Use my current location';
+            btn.disabled = false;
+        },
+        () => {
+            btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/></svg> Use my current location';
+            btn.disabled = false;
+        }
+    );
+}
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLocModal();
+});
+document.getElementById('locInput') && document.getElementById('locInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') saveLocation();
+});
+(function(){
+    const saved = localStorage.getItem('myshop_location');
+    if (saved) {
+        document.getElementById('deliverLabel').textContent = saved;
+    }
+})();
 // ===== LANGUAGE SELECTOR =====
 function toggleLangDropdown() {
     const dd = document.getElementById('langDropdown');
