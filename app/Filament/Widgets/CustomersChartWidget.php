@@ -2,7 +2,10 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\User;
 use Filament\Widgets\ChartWidget;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class CustomersChartWidget extends ChartWidget
 {
@@ -14,18 +17,40 @@ class CustomersChartWidget extends ChartWidget
 
     protected function getData(): array
     {
+        // Get monthly customer registration data for last 12 months (SQLite compatible)
+        $startDate = Carbon::now()->subMonths(11)->startOfMonth();
+        $monthlyCustomers = User::where('created_at', '>=', $startDate)
+            ->get()
+            ->groupBy(function($item) {
+                return $item->created_at->format('n');
+            })
+            ->map->count()
+            ->toArray();
+
+        // Calculate cumulative totals
+        $customerData = [];
+        $labels = [];
+        $cumulative = User::where('created_at', '<', $startDate)->count();
+
+        for ($i = 0; $i < 12; $i++) {
+            $month = Carbon::now()->subMonths(11 - $i);
+            $labels[] = $month->format('M');
+            $cumulative += $monthlyCustomers[$month->month] ?? 0;
+            $customerData[] = $cumulative;
+        }
+
         return [
             'datasets' => [
                 [
-                    'label' => 'Customers',
-                    'data' => [4200, 5000, 5800, 6500, 7200, 8000, 9000, 10000, 11500, 13000, 15000, 17500],
-                    'borderColor' => '#f59e0b',
-                    'backgroundColor' => 'rgba(245, 158, 11, 0.1)',
+                    'label' => 'Total Customers',
+                    'data' => $customerData,
+                    'borderColor' => '#FF9900',
+                    'backgroundColor' => 'rgba(255, 153, 0, 0.1)',
                     'fill' => true,
                     'tension' => 0.4,
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'labels' => $labels,
         ];
     }
 
