@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreAuthController;
+use App\Http\Controllers\ApiController;
 
 // Home
 Route::get('/', [ProductController::class, 'home'])->name('home');
@@ -75,3 +76,14 @@ Route::post('/login',   [StoreAuthController::class, 'login'])->name('store.logi
 Route::get('/register', [StoreAuthController::class, 'showRegister'])->name('store.register');
 Route::post('/register',[StoreAuthController::class, 'register'])->name('store.register.post');
 Route::post('/logout',  [StoreAuthController::class, 'logout'])->name('store.logout');
+
+// API Routes with API Key Middleware
+Route::middleware('api.key')->group(function () {
+    Route::get('/api/products', [ApiController::class, 'products'])->name('api.products');
+    Route::get('/api/products/{id}', [ApiController::class, 'product'])->name('api.product');
+});
+
+// Test route to check if middleware is working
+Route::get('/test-middleware', function () {
+    return 'Middleware is working!';
+})->middleware('api.key');
