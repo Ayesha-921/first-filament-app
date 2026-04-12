@@ -64,6 +64,7 @@ Route::get('/payment', [ProductController::class, 'payment'])->name('payment');
 Route::post('/payment/stripe', [ProductController::class, 'stripePayment'])->name('payment.stripe');
 Route::get('/order/success/{order}', [ProductController::class, 'orderSuccess'])->name('order.success');
 Route::get('/orders', [ProductController::class, 'orders'])->name('orders.index');
+Route::get('/account', [ProductController::class, 'account'])->name('account')->middleware('auth');
 
 // Live search API
 Route::get('/api/search', [ProductController::class, 'search'])->name('products.search');

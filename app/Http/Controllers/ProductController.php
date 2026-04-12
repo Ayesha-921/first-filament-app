@@ -318,6 +318,14 @@ class ProductController extends Controller
         return view('store.orders', compact('orders'));
     }
 
+    public function account()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('store.login')->with('error', 'Please login to view your account.');
+        }
+        return view('store.account');
+    }
+
     public function newReleases()
     {
         $categories = Category::where('is_active', true)->get();
