@@ -10,6 +10,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmationMail;
 use Stripe\Stripe;
 use Stripe\Charge;
 
@@ -276,6 +278,9 @@ class ProductController extends Controller
                 'transaction_id' => $charge->id,
             ]);
 
+            // Send order confirmation email
+            Mail::to($order->email)->send(new OrderConfirmationMail($order));
+
             // Create order items
             foreach ($cart as $id => $item) {
                 OrderItem::create([
@@ -522,4 +527,19 @@ class ProductController extends Controller
 
         return response()->json($results->values());
     }
+
+    public function create()
+    {
+        return view('products.create');
+    }
+
+public function store(Request $request)
+{
+    $product = Product::create([
+        'name' => $request->name,
+        'price' => $request->price,
+    ]);
+
+    return redirect()->back()->with('success', 'Product created successfully!');
+}
 }

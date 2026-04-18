@@ -4,7 +4,9 @@ namespace App\Filament\Resources\ProductResource\Pages;
 
 use App\Filament\Resources\ProductResource;
 use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Notifications\Notification;
 
 class ListProducts extends ListRecords
 {
@@ -12,6 +14,8 @@ class ListProducts extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [CreateAction::make()];
+        return [
+            CreateAction::make(),
+        ];
     }
 }

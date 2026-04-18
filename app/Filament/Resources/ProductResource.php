@@ -301,7 +301,14 @@ class ProductResource extends Resource
                     ->url(fn ($record): string => url('/products/' . $record->slug))
                     ->openUrlInNewTab(),
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->after(function ($record) {
+                        \Filament\Notifications\Notification::make()
+                            ->title('Product Deleted 🗑️')
+                            ->body("Product '{$record->name}' deleted.")
+                            ->danger()
+                            ->sendToDatabase(auth()->user());
+                    }),
             ])
             ->bulkActions([
                 BulkActionGroup::make([DeleteBulkAction::make()]),

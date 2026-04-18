@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Notifications\Notification;
 
 class EditProduct extends EditRecord
 {
@@ -27,4 +28,14 @@ class EditProduct extends EditRecord
         }
         return $data;
     }
+
+protected function afterSave(): void
+{
+    Notification::make()
+        ->title('Product updated successfully')
+        ->body("Product '{$this->record->name}' updated.")
+        ->success()
+        ->sendToDatabase(auth()->user());
+}
+
 }

@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreAuthController;
 use App\Http\Controllers\ApiController;
+use App\Models\Order;
+
 
 // Home
 Route::get('/', [ProductController::class, 'home'])->name('home');
@@ -87,3 +89,10 @@ Route::middleware('api.key')->group(function () {
 Route::get('/test-middleware', function () {
     return 'Middleware is working!';
 })->middleware('api.key');
+
+
+// Product routes
+Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
+
+

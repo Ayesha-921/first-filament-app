@@ -17,7 +17,10 @@ return new class extends Migration
             $table->enum('payment_status', ['unpaid', 'paid', 'refunded'])->default('unpaid');
             $table->string('shipping_address')->nullable();
             $table->text('notes')->nullable();
+            $table->string('email');
+            $table->boolean('email_sent')->default(false);
             $table->timestamps();
+            
         });
     }
 

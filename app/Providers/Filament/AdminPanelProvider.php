@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->registration()
+            ->databaseNotifications()
             ->brandName('Filament App')
             ->colors([
                 'primary' => Color::Amber,
