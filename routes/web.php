@@ -55,7 +55,9 @@ Route::get('/new-releases', [ProductController::class, 'newReleases'])->name('ne
 
 // Cart
 Route::get('/cart', [ProductController::class, 'cart'])->name('cart.index');
-Route::post('/cart/add/{id}', [ProductController::class, 'addToCart'])->name('cart.add');
+Route::post('/cart/add/{id}', [ProductController::class, 'addToCart'])
+    ->middleware('auth')
+    ->name('cart.add');
 Route::post('/cart/remove/{id}', [ProductController::class, 'removeFromCart'])->name('cart.remove');
 Route::post('/cart/update/{id}', [ProductController::class, 'updateCart'])->name('cart.update');
 Route::post('/cart/clear', [ProductController::class, 'clearCart'])->name('cart.clear');
