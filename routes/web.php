@@ -54,13 +54,18 @@ Route::get('/beauty', [ProductController::class, 'beauty'])->name('beauty');
 Route::get('/new-releases', [ProductController::class, 'newReleases'])->name('new-releases');
 
 // Cart
-Route::get('/cart', [ProductController::class, 'cart'])->name('cart.index');
-Route::post('/cart/add/{id}', [ProductController::class, 'addToCart'])
-    ->middleware('auth')
-    ->name('cart.add');
-Route::post('/cart/remove/{id}', [ProductController::class, 'removeFromCart'])->name('cart.remove');
-Route::post('/cart/update/{id}', [ProductController::class, 'updateCart'])->name('cart.update');
-Route::post('/cart/clear', [ProductController::class, 'clearCart'])->name('cart.clear');
+Route::middleware('auth')->group(function () {
+
+    Route::get('/cart', [ProductController::class, 'cart'])->name('cart.index');
+    Route::post('/cart/add/{id}', [ProductController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/remove/{id}', [ProductController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/cart/update/{id}', [ProductController::class, 'updateCart'])->name('cart.update');
+    Route::post('/cart/clear', [ProductController::class, 'clearCart'])->name('cart.clear');
+
+    Route::get('/checkout', [ProductController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout', [ProductController::class, 'processCheckout'])->name('checkout.process');
+
+});
 
 // Checkout & Payment
 Route::get('/checkout', [ProductController::class, 'checkout'])->name('checkout');
