@@ -28,6 +28,13 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'flask_ocr' => [
+        'base_url' => env('FLASK_OCR_BASE_URL', 'http://127.0.0.1:5000'),
+        'api_key'  => env('FLASK_OCR_API_KEY'),
+        'endpoint' => env('FLASK_OCR_ENDPOINT', '/api/ocr'),
+        'timeout'  => env('FLASK_OCR_TIMEOUT', 60),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
