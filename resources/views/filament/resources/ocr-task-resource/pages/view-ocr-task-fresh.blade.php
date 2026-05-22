@@ -2,20 +2,12 @@
     $imageUrl = $record->image_path
         ? \Illuminate\Support\Facades\Storage::disk('public')->url($record->image_path)
         : null;
-
-    $statusColors = [
-        'queued'     => 'bg-yellow-100 text-yellow-800 ring-yellow-200 dark:bg-yellow-500/10 dark:text-yellow-400 dark:ring-yellow-500/20',
-        'processing' => 'bg-blue-100 text-blue-800 ring-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:ring-blue-500/20',
-        'completed'  => 'bg-emerald-100 text-emerald-800 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20',
-        'failed'     => 'bg-red-100 text-red-800 ring-red-200 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20',
-    ];
-    $statusClass = $statusColors[$record->status] ?? 'bg-gray-100 text-gray-800';
 @endphp
 
 <x-filament-panels::page>
     <div class="max-w-2xl mx-auto w-full">
 
-        {{-- Main card exactly like Create page --}}
+        {{-- Card matching Create page exactly --}}
         <div class="rounded-xl bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-950/5 dark:ring-white/10">
 
             {{-- Section header matching Create page "OCR Submission" --}}
@@ -26,14 +18,6 @@
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                     Upload an image to extract its text using the Flask AI service.
                 </p>
-                <div class="mt-2 inline-flex items-center gap-2">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ring-1 ring-inset {{ $statusClass }}">
-                        {{ ucfirst($record->status) }}
-                    </span>
-                    @if ($record->processed_at)
-                        <span class="text-xs text-gray-400 dark:text-gray-500">Processed {{ $record->processed_at->diffForHumans() }}</span>
-                    @endif
-                </div>
             </div>
 
             {{-- Card body matching form fields --}}
@@ -56,16 +40,12 @@
                             Image
                         </label>
                         <div class="rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 p-6 flex justify-center">
-                            <img
-                                src="{{ $imageUrl }}"
-                                alt="{{ $record->title }}"
-                                class="max-h-96 w-auto rounded-lg object-contain shadow-sm"
-                            />
+                            <img src="{{ $imageUrl }}" alt="{{ $record->title }}" class="max-h-96 w-auto rounded-lg object-contain shadow-sm" />
                         </div>
                     </div>
                 @endif
 
-                {{-- Status / queue message --}}
+                {{-- Status-dependent content --}}
                 @if ($record->status === 'queued' || $record->status === 'processing')
                     <div class="flex items-center gap-3 p-4 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 ring-1 ring-inset ring-blue-200 dark:ring-blue-500/20">
                         <x-filament::icon icon="heroicon-o-clock" class="w-5 h-5 flex-shrink-0" />
@@ -82,7 +62,7 @@
                         @endif
                     </div>
                 @else
-                    {{-- Extracted Text field exactly like Notes / Description textarea --}}
+                    {{-- Extracted Text field with icon + copy button --}}
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <div class="flex items-center gap-2">
@@ -96,7 +76,12 @@
                                 <button
                                     type="button"
                                     x-data="{ copied: false }"
-                                    x-on:click="navigator.clipboard.writeText(document.getElementById('ocr-text').innerText); copied = true; setTimeout(() =&gt; copied = false, 1500)"
+                                    x-on:click="
+                                        navigator.clipboard.writeText(document.getElementById('ocr-text').innerText).then(() => {
+                                            copied = true;
+                                            setTimeout(() => copied = false, 1500);
+                                        });
+                                    "
                                     class="inline-flex items-center gap-1.5 text-xs font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition bg-primary-50 dark:bg-primary-500/10 px-2.5 py-1.5 rounded-md"
                                 >
                                     <template x-if="!copied">
@@ -115,6 +100,7 @@
                             @endif
                         </div>
 
+                        {{-- Bordered text box matching Notes/Description style --}}
                         <div class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-white shadow-sm min-h-[6rem]">
                             <pre
                                 id="ocr-text"
@@ -136,7 +122,6 @@
                     <x-filament::icon icon="heroicon-o-pencil-square" class="w-4 h-4" />
                     Edit
                 </a>
-
                 <a
                     href="{{ \App\Filament\Resources\OcrTaskResource::getUrl('edit', ['record' => $record]) }}"
                     class="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 transition"

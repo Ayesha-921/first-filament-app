@@ -5,7 +5,7 @@ namespace App\Jobs;
 use App\Models\OcrTask;
 use App\Models\User;
 use App\Notifications\OcrTaskCompleted;
-use Filament\Notifications\Actions\Action as FilamentAction;
+use Filament\Actions\Action as FilamentAction;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -61,6 +61,7 @@ class ProcessOcrJob implements ShouldQueue
                 )
                 ->post($baseUrl . $endpoint, [
                     'title' => $task->title,
+                    'mode'  => (string) config('services.flask_ocr.mode', 'formatted'),
                 ]);
 
             if (! $response->successful()) {

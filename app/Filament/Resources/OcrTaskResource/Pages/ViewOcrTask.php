@@ -7,25 +7,29 @@ use App\Jobs\ProcessOcrJob;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Notifications\Notification;
-use Filament\Resources\Pages\Page;
-use Illuminate\Contracts\View\View;
+use Filament\Resources\Pages\ViewRecord;
 
-class ViewOcrTask extends Page
+class ViewOcrTask extends ViewRecord
 {
     protected static string $resource = OcrTaskResource::class;
 
-    protected string $view = 'filament.resources.ocr-task-resource.pages.view-ocr-task';
+    protected string $view = 'filament.resources.ocr-task-resource.pages.task-show';
 
-    public \App\Models\OcrTask $record;
-
-    public function mount(int | string $record): void
+    protected function getViewData(): array
     {
-        $this->record = static::getResource()::resolveRecordRouteBinding($record);
+        return [
+            'record' => $this->record,
+        ];
     }
 
     public function getTitle(): string|\Illuminate\Contracts\Support\Htmlable
     {
         return $this->record->title;
+    }
+
+    public function getHeading(): string|\Illuminate\Contracts\Support\Htmlable
+    {
+        return '';
     }
 
     protected function getHeaderActions(): array

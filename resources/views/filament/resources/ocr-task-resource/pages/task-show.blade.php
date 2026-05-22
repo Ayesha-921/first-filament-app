@@ -82,7 +82,7 @@
                         @endif
                     </div>
                 @else
-                    {{-- Extracted Text field exactly like Notes / Description textarea --}}
+                    {{-- Extracted Text field with icon + copy button + bordered box --}}
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <div class="flex items-center gap-2">

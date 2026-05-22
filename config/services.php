@@ -31,7 +31,8 @@ return [
     'flask_ocr' => [
         'base_url' => env('FLASK_OCR_BASE_URL', 'http://127.0.0.1:5000'),
         'api_key'  => env('FLASK_OCR_API_KEY'),
-        'endpoint' => env('FLASK_OCR_ENDPOINT', '/api/ocr'),
+        'endpoint' => env('FLASK_OCR_ENDPOINT', '/extract'),
+        'mode'     => env('FLASK_OCR_MODE', 'formatted'),
         'timeout'  => env('FLASK_OCR_TIMEOUT', 60),
     ],
 

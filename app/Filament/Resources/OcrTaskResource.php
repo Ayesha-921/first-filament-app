@@ -150,6 +150,7 @@ class OcrTaskResource extends Resource
             'index'  => Pages\ListOcrTasks::route('/'),
             'create' => Pages\CreateOcrTask::route('/create'),
             'view'   => Pages\ViewOcrTask::route('/{record}'),
+            'edit'   => Pages\EditOcrTask::route('/{record}/edit'),
         ];
     }
 }
