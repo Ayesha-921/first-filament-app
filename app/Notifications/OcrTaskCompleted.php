@@ -21,7 +21,7 @@ class OcrTaskCompleted extends Notification
 
     public function toDatabase(object $notifiable): array
     {
-        $url = url('/admin/ocr-tasks/' . $this->task->getKey());
+        $url = url('/admin/ocr-tasks/' . $this->task->getRouteKey());
 
         return [
             'title'   => 'Your task has been processed successfully.',

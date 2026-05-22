@@ -8,6 +8,7 @@ use App\Models\OcrTask;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CreateOcrTask extends CreateRecord
 {
@@ -39,17 +40,22 @@ class CreateOcrTask extends CreateRecord
 
         // Persistent bell notification.
         if ($user = Auth::user()) {
-            Notification::make()
+            $notification = Notification::make()
                 ->title('Your task is in queue')
                 ->body("OCR for \"{$task->title}\" is being processed in the background.")
                 ->info()
-                ->icon('heroicon-o-clock')
-                ->sendToDatabase($user);
+                ->icon('heroicon-o-clock');
+
+            $user->notifications()->create([
+                'id' => (string) Str::uuid(),
+                'type' => \Filament\Notifications\DatabaseNotification::class,
+                'data' => $notification->getDatabaseMessage(),
+            ]);
         }
     }
 
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('view', ['record' => $this->record]);
+        return $this->getResource()::getUrl('index');
     }
 }

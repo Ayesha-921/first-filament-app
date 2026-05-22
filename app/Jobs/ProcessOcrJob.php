@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\OcrTask;
 use App\Models\User;
-use App\Notifications\OcrTaskCompleted;
 use Filament\Actions\Action as FilamentAction;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,6 +12,7 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProcessOcrJob implements ShouldQueue
 {
@@ -100,17 +100,18 @@ class ProcessOcrJob implements ShouldQueue
 
         $user = $task->user ?? User::first();
         if ($user) {
-            FilamentNotification::make()
+            $notification = FilamentNotification::make()
                 ->title('OCR task failed')
                 ->body("\"{$task->title}\" could not be processed.")
                 ->danger()
                 ->actions([
                     FilamentAction::make('view')
                         ->label('View task')
-                        ->url(url('/admin/ocr-tasks/' . $task->getKey()))
+                        ->url(url('/admin/ocr-tasks/' . $task->getRouteKey()))
                         ->markAsRead(),
-                ])
-                ->sendToDatabase($user);
+                ]);
+
+            $this->storeDatabaseNotification($user, $notification);
         }
     }
 
@@ -121,21 +122,27 @@ class ProcessOcrJob implements ShouldQueue
             return;
         }
 
-        // Send a Laravel database notification (custom payload).
-        $user->notify(new OcrTaskCompleted($task));
-
-        // Also push a Filament-styled bell notification with a clickable action.
-        FilamentNotification::make()
-            ->title('Your task has been completed')
+        $notification = FilamentNotification::make()
+            ->title('Your task has been processed')
             ->body("OCR for \"{$task->title}\" is ready to view.")
             ->success()
             ->icon('heroicon-o-check-circle')
             ->actions([
                 FilamentAction::make('view')
-                    ->label('View result')
-                    ->url(url('/admin/ocr-tasks/' . $task->getKey()))
+                    ->label('View task')
+                    ->url(url('/admin/ocr-tasks/' . $task->getRouteKey()))
                     ->markAsRead(),
-            ])
-            ->sendToDatabase($user);
+            ]);
+
+        $this->storeDatabaseNotification($user, $notification);
+    }
+
+    protected function storeDatabaseNotification(User $user, FilamentNotification $notification): void
+    {
+        $user->notifications()->create([
+            'id' => (string) Str::uuid(),
+            'type' => \Filament\Notifications\DatabaseNotification::class,
+            'data' => $notification->getDatabaseMessage(),
+        ]);
     }
 }

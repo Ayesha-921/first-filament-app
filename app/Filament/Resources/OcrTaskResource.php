@@ -18,12 +18,17 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class OcrTaskResource extends Resource
 {
     protected static ?string $model = OcrTask::class;
 
     protected static ?string $recordTitleAttribute = 'title';
+
+    protected static ?string $recordRouteKeyName = 'slug';
 
     public static function getNavigationIcon(): \BackedEnum|\Illuminate\Contracts\Support\Htmlable|string|null
     {
@@ -47,9 +52,33 @@ class OcrTaskResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('status', 'queued')
-            ->orWhere('status', 'processing')
+        return static::getModel()::query()
+            ->where('user_id', Auth::id())
+            ->where(fn (Builder $query): Builder => $query
+                ->where('status', 'queued')
+                ->orWhere('status', 'processing'))
             ->count() ?: null;
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('user_id', Auth::id());
+    }
+
+    public static function canView(Model $record): bool
+    {
+        return (int) $record->user_id === (int) Auth::id();
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return (int) $record->user_id === (int) Auth::id();
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return (int) $record->user_id === (int) Auth::id();
     }
 
     public static function form(Schema $schema): Schema
@@ -115,11 +144,13 @@ class OcrTaskResource extends Resource
 
                 TextColumn::make('processed_at')
                     ->dateTime()
+                    ->timezone(config('app.display_timezone', 'Asia/Karachi'))
                     ->sortable()
                     ->placeholder('—'),
 
                 TextColumn::make('created_at')
                     ->dateTime()
+                    ->timezone(config('app.display_timezone', 'Asia/Karachi'))
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
